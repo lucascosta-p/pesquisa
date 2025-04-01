@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Um detalhe especial</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #fff5f7;
+            color: #5e2b37;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(210, 51, 105, 0.1);
+        }
+        h1 {
+            color: #d23369;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 16px;
+            color: #9e4244;
+            margin: 25px 0 10px 0;
+            font-weight: 500;
+        }
+        .divider {
+            border: none;
+            height: 1px;
+            background-color: #ffb6c1;
+            margin: 25px 0;
+        }
+        select, input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ffb6c1;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 5px;
+            background-color: #fff9fb;
+        }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d23369' stroke='%23d23369' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+        }
+        #customSize {
+            display: none;
+            margin-top: 10px;
+        }
+        .note {
+            font-size: 13px;
+            color: #b58e94;
+            text-align: center;
+            margin-top: 30px;
+            font-style: italic;
+        }
+        button {
+            background-color: #e75480;
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background-color: #d23369;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Preciso de um detalhe seu para algo especial...</h1>
+        
+        <h2>Qual o tamanho do seu dedo anelar?*</h2>
+        <select id="ringSize" required>
+            <option value="" disabled selected>Selecione seu nível de sofisticação...</option>
+            <option value="12 - Dedinho de fada">12 - "Dedinho de fada" 👑</option>
+            <option value="13 - Padrão Disney">13 - "Padrão Disney" ✨</option>
+            <option value="14 - Perfeição em pessoa">14 - "Perfeição em pessoa" 💎</option>
+            <option value="15 - Mão de artista">15 - "Mão de artista" 🎭</option>
+            <option value="16 - Rainha do pedaço">16 - "Rainha do pedaço" 👑💍</option>
+            <option value="outro">Outro - "Meu dedo é único como eu" 🤷‍♀️</option>
+        </select>
+        <input type="text" id="customSize" placeholder="Digite o tamanho exato (e me conte como mediu isso 👀)">
+        
+        <hr class="divider">
+        
+        <h2>Quer deixar alguma observação? (opcional)</h2>
+        <input type="text" id="message" placeholder="Ex.: 'Ouro sim, prata nem pensar' ou 'fina'">
+        
+        <button id="sendBtn">💘 Enviar Resposta Secreta</button>
+        
+        <p class="note">*Pergunta importante para fins unica e exclusivamente didáticos.</p>
+    </div>
+
+    <script>
+        // Mostrar campo personalizado quando selecionar "Outro"
+        document.getElementById('ringSize').addEventListener('change', function() {
+            const customSize = document.getElementById('customSize');
+            customSize.style.display = this.value === 'outro' ? 'block' : 'none';
+            if (this.value !== 'outro') customSize.value = '';
+        });
+
+        // Envio para WhatsApp
+        document.getElementById('sendBtn').addEventListener('click', function() {
+            let ringSize = document.getElementById('ringSize').value;
+            const customSize = document.getElementById('customSize').value;
+            const message = document.getElementById('message').value;
+            
+            // Validação
+            if (!ringSize || ringSize.includes("Selecione")) {
+                alert('Ei! Escolha seu nível de sofisticação antes! 👀');
+                return;
+            }
+            
+            if (ringSize === 'outro' && !customSize) {
+                alert('Me conta qual é o tamanho então! 😏');
+                return;
+            }
+            
+            // Formata a mensagem final
+            if (ringSize === 'outro') {
+                ringSize = `Outro - ${customSize}`;
+            }
+            
+            // Mensagem para WhatsApp
+            const whatsappMessage = `💍 *RESPOSTA DA PESQUISA ROMÂNTICA* 💍\n\n` +
+                                  `📏 *Tamanho do anel:* ${ringSize}\n` +
+                                  `💬 *Observação:* ${message || '"Nenhuma (mas eu aceito surpresas)"'}\n\n` +
+                                  `_Dados enviados com 99.9% de intenção amorosa_ ❤️`;
+            
+            // Substitua SEUNUMERO pelo seu número com DDI (ex: 5511999999999)
+            window.open(`https://wa.me/5511980502265?text=${encodeURIComponent(whatsappMessage)}`);
+            
+            // Efeito visual
+            this.innerHTML = '✓ Mensagem <span style="font-size:18px">💌</span> enviada!';
+            this.style.background = "linear-gradient(to right, #e75480, #ff85a2)";
+        });
+    </script>
+</body>
+</html>
